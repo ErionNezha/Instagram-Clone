@@ -1,0 +1,411 @@
+<!-- Created by Erion Nezha — © 2026 All rights reserved -->
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FotoGram — Erion Nezha</title>
+<meta name="description" content="Stories, feed me foto dhe komente — një klon elegant i Instagramit, demo plotësisht lokale.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style id="appcss">
+/* ============ ERION NEZHA · ULTRA-PREMIUM THEME (shared) ============ */
+:root{
+  --bg0:#070b16; --bg1:#0b1124; --gold:#D4AF37; --gold2:#f3dd8f;
+  --ink:#eef1f7; --mut:#9aa3b8; --glass:rgba(255,255,255,.055);
+  --line:rgba(212,175,55,.22); --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:var(--bg0); color:var(--ink); min-height:100vh; overflow-x:hidden;
+}
+.bg-orbs{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.bg-orbs span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.28;animation:drift 14s ease-in-out infinite alternate}
+.bg-orbs span:nth-child(1){width:520px;height:520px;left:-140px;top:-120px;background:radial-gradient(circle,#D4AF37,transparent 65%)}
+.bg-orbs span:nth-child(2){width:620px;height:620px;right:-180px;top:30%;background:radial-gradient(circle,#2b3f8f,transparent 65%);animation-delay:-5s}
+.bg-orbs span:nth-child(3){width:460px;height:460px;left:20%;bottom:-160px;background:radial-gradient(circle,#6b4fa1,transparent 65%);animation-delay:-9s}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.12)}}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+.site-header{padding:64px 0 30px;text-align:center}
+.overline{letter-spacing:.42em;font-size:11px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.site-header h1{font-size:clamp(30px,5vw,52px);font-weight:800;line-height:1.15;
+  background:linear-gradient(120deg,#fff 20%,var(--gold2) 55%,var(--gold) 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.site-header p{color:var(--mut);max-width:640px;margin:14px auto 0;font-size:16px;line-height:1.65}
+.live-badge{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 18px;border-radius:999px;
+  border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);font-size:13px;color:var(--gold2);letter-spacing:.08em}
+.live-badge i{width:9px;height:9px;border-radius:50%;background:#3ddc84;box-shadow:0 0 12px #3ddc84;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.demo-wrap{margin:26px 0 54px}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);padding:30px}
+.code-section{margin:0 0 60px}
+.code-section h2{font-size:24px;margin-bottom:6px}
+.code-section .sub{color:var(--mut);font-size:14px;margin-bottom:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:0;align-items:center}
+.ctab{padding:10px 22px;border-radius:12px 12px 0 0;border:1px solid var(--line);border-bottom:none;cursor:pointer;
+  background:rgba(255,255,255,.03);color:var(--mut);font-size:14px;font-weight:600;letter-spacing:.04em;transition:.25s}
+.ctab.active{background:linear-gradient(180deg,rgba(212,175,55,.22),rgba(212,175,55,.06));color:var(--gold2)}
+.ctab:hover{color:var(--ink)}
+#copyBtn{margin-left:auto;padding:9px 20px;border-radius:10px;border:1px solid var(--line);cursor:pointer;
+  background:linear-gradient(120deg,var(--gold),#a8842a);color:#0a0e1a;font-weight:700;font-size:13px;transition:.25s}
+#copyBtn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.35)}
+.codebox{border:1px solid var(--line);border-radius:0 14px 14px 14px;overflow:hidden;background:#0d1326}
+.codebox pre{margin:0;max-height:560px;overflow:auto}
+.codebox pre code{display:block;padding:22px;font-family:"Cascadia Code","Fira Code",Consolas,monospace;font-size:13.5px;line-height:1.7;background:transparent}
+.codebox pre::-webkit-scrollbar{width:10px;height:10px}
+.codebox pre::-webkit-scrollbar-thumb{background:rgba(212,175,55,.35);border-radius:8px}
+footer{text-align:center;padding:34px 20px 44px;color:var(--mut);font-size:14px;border-top:1px solid rgba(212,175,55,.14)}
+footer strong{color:var(--gold2)}
+/* ============ APP CSS (per projekt) ============ */
+
+.fg-note{display:inline-block;margin-bottom:20px;padding:8px 18px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(212,175,55,.08);color:var(--gold2);font-size:13px;letter-spacing:.03em}
+.fg-profile{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:8px}
+.fg-avatar{width:86px;height:86px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:38px;font-weight:800;color:#0a0e1a;background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border:3px solid var(--gold);box-shadow:0 0 26px rgba(212,175,55,.35);flex-shrink:0}
+.fg-user h2{font-size:22px;margin-bottom:4px}
+.fg-bio{color:var(--mut);font-size:14px}
+.fg-stats{display:flex;gap:28px;margin-left:auto}
+.fg-stats div{text-align:center}
+.fg-stats b{display:block;font-size:19px;color:var(--gold2)}
+.fg-stats span{font-size:12px;color:var(--mut)}
+.fg-stories{display:flex;gap:16px;overflow-x:auto;padding:16px 2px 20px;scrollbar-width:thin}
+.fg-story{background:none;border:none;cursor:pointer;text-align:center;min-width:78px;color:var(--ink)}
+.fg-ring{width:70px;height:70px;border-radius:50%;padding:3px;margin:0 auto 6px;
+  background:conic-gradient(#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75);transition:.25s}
+.fg-story:hover .fg-ring{transform:scale(1.07)}
+.fg-ring-in{width:100%;height:100%;border-radius:50%;background:var(--bg1);
+  display:flex;align-items:center;justify-content:center;font-size:30px;border:2px solid var(--bg1)}
+.fg-story span{font-size:12px;color:var(--mut)}
+.fg-feed{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.fg-post{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.03);transition:.25s}
+.fg-post:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.fg-phead{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.fg-mini{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#0a0e1a;background:linear-gradient(135deg,var(--gold2),var(--gold));font-size:15px}
+.fg-phead b{font-size:14px}
+.fg-phead small{color:var(--mut);margin-left:auto;font-size:12px}
+.fg-photo{position:relative;aspect-ratio:1/1;cursor:pointer;overflow:hidden}
+.fg-photo .fg-grad{position:absolute;inset:0}
+.fg-photo .fg-emoji{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:110px;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
+.fg-heartpop{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:96px;opacity:0;pointer-events:none;text-shadow:0 6px 30px rgba(0,0,0,.6)}
+.fg-heartpop.show{animation:fgpop .75s ease}
+@keyframes fgpop{0%{opacity:0;transform:scale(0)}25%{opacity:1;transform:scale(1.25)}45%{transform:scale(.92)}100%{opacity:0;transform:scale(1)}}
+.fg-actions{display:flex;gap:4px;padding:10px 12px;align-items:center}
+.fg-act{background:none;border:none;font-size:22px;cursor:pointer;padding:6px;border-radius:10px;transition:.2s;line-height:1}
+.fg-act:hover{background:rgba(212,175,55,.12);transform:scale(1.12)}
+.fg-act.liked{filter:none}
+.fg-act.saved{filter:none}
+.fg-likes{padding:0 14px;font-size:14px;font-weight:700}
+.fg-cap{padding:4px 14px 2px;font-size:14px;color:var(--ink)}
+.fg-cap b{margin-right:6px}
+.fg-comlink{background:none;border:none;color:var(--mut);font-size:13px;cursor:pointer;padding:6px 14px 12px;display:block}
+.fg-comlink:hover{color:var(--gold2)}
+.fg-modal{position:fixed;inset:0;background:rgba(4,6,12,.82);backdrop-filter:blur(6px);z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.fg-modal[hidden]{display:none}
+.fg-story-view{position:relative;width:min(420px,94vw);height:min(640px,88vh);border-radius:20px;overflow:hidden;
+  border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.fg-sprog{position:absolute;top:12px;left:14px;right:14px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);z-index:3}
+.fg-sprog div{height:100%;width:0;border-radius:4px;background:var(--gold)}
+.fg-shead{position:absolute;top:24px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;z-index:3}
+.fg-shead span{color:#fff;font-weight:700;font-size:15px;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.fg-shead button,.fg-snav{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);color:#fff;
+  width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:17px;transition:.2s}
+.fg-shead button:hover,.fg-snav:hover{background:var(--gold);color:#0a0e1a}
+.fg-snav{position:absolute;top:50%;transform:translateY(-50%);z-index:3}
+.fg-snav.left{left:10px}.fg-snav.right{right:10px}
+.fg-sbody{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:130px}
+.fg-stime{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.85);font-size:13px;z-index:3}
+.fg-comments{width:min(480px,94vw);max-height:84vh;display:flex;flex-direction:column;border-radius:18px;
+  background:#0d1428;border:1px solid var(--line);overflow:hidden}
+.fg-chead{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--line)}
+.fg-chead button{background:none;border:none;color:var(--mut);font-size:18px;cursor:pointer}
+.fg-chead button:hover{color:var(--gold)}
+.fg-clist{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:12px;min-height:180px}
+.fg-citem{font-size:14px;line-height:1.5}
+.fg-citem b{color:var(--gold2);margin-right:8px}
+.fg-citem small{color:var(--mut);display:block;font-size:11px;margin-top:2px}
+.fg-cempty{color:var(--mut);text-align:center;padding:30px 0;font-size:14px}
+.fg-cform{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--line)}
+.fg-cform input{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:12px;
+  padding:11px 14px;color:var(--ink);font-size:14px;outline:none}
+.fg-cform input:focus{border-color:var(--gold)}
+.fg-cform button{background:linear-gradient(120deg,var(--gold),#a8842a);border:none;border-radius:12px;
+  padding:11px 20px;font-weight:700;cursor:pointer;color:#0a0e1a}
+
+@media(max-width:640px){.glass{padding:20px}.site-header{padding:44px 0 22px}}
+</style>
+</head>
+<body>
+<div class="bg-orbs"><span></span><span></span><span></span></div>
+
+<header class="site-header wrap">
+  <div class="overline">Erion Nezha · Web Projects</div>
+  <h1>FotoGram</h1>
+  <p>Stories, feed me foto dhe komente — një klon elegant i Instagramit, demo plotësisht lokale.</p>
+  <div class="live-badge"><i></i> LIVE DEMO</div>
+</header>
+
+<main class="wrap">
+  <section class="demo-wrap">
+    <div class="glass" id="demo">
+
+<div class="fg-note">📌 Demo lokale — të dhënat (like, komente) ruhen vetëm në shfletuesin tënd</div>
+
+<div class="fg-profile">
+  <div class="fg-avatar">E</div>
+  <div class="fg-user">
+    <h2>@erion</h2>
+    <p class="fg-bio">📸 Fotograf amator · 🇦🇱 Shqipëri · Kap momente, jo poza</p>
+  </div>
+  <div class="fg-stats">
+    <div><b>6</b><span>Postime</span></div>
+    <div><b>1.248</b><span>Ndjekës</span></div>
+    <div><b>312</b><span>Duke ndjekur</span></div>
+  </div>
+</div>
+
+<div class="fg-stories" id="fgStories"></div>
+<div class="fg-feed" id="fgFeed"></div>
+
+<div class="fg-modal" id="fgStoryModal" hidden>
+  <div class="fg-story-view">
+    <div class="fg-sprog"><div id="fgSBar"></div></div>
+    <div class="fg-shead">
+      <span id="fgSName"></span>
+      <button id="fgSClose" title="Mbyll">✕</button>
+    </div>
+    <button class="fg-snav left" id="fgSPrev" title="Mëparshmja">‹</button>
+    <button class="fg-snav right" id="fgSNext" title="Tjetra">›</button>
+    <div class="fg-sbody" id="fgSBody"></div>
+  </div>
+</div>
+
+<div class="fg-modal" id="fgComModal" hidden>
+  <div class="fg-comments">
+    <div class="fg-chead">
+      <b id="fgCTitle">Komentet</b>
+      <button id="fgCClose" title="Mbyll">✕</button>
+    </div>
+    <div class="fg-clist" id="fgCList"></div>
+    <form class="fg-cform" id="fgCForm">
+      <input id="fgCInput" placeholder="Shto koment…" maxlength="200" autocomplete="off">
+      <button type="submit">Dërgo</button>
+    </form>
+  </div>
+</div>
+
+    </div>
+  </section>
+
+  <section class="code-section">
+    <h2>💻 Kodi Burim</h2>
+    <p class="sub">I gjithë kodi i këtij projekti — i lexueshëm, i kopjueshëm, gati për t'u mësuar.</p>
+    <div class="tabs">
+      <button class="ctab active" data-tab="html">HTML</button>
+      <button class="ctab" data-tab="css">CSS</button>
+      <button class="ctab" data-tab="js">JavaScript</button>
+      <button id="copyBtn">Kopjo kodin</button>
+    </div>
+    <div class="codebox"><pre><code id="codeView" class="language-html"></code></pre></div>
+  </section>
+</main>
+
+<footer>Krijuar nga <strong>Erion Nezha</strong> · © 2026 — Të gjitha të drejtat e rezervuara</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script id="appjs">
+
+(function(){
+"use strict";
+var LS="fotogram_v1";
+var stories=[
+ {name:"erion",emoji:"🌅",g:"linear-gradient(135deg,#feda75,#fa7e1e,#d62976)",t:"2 orë më parë"},
+ {name:"megi",emoji:"🌸",g:"linear-gradient(135deg,#a18cd1,#fbc2eb)",t:"4 orë më parë"},
+ {name:"mela",emoji:"🏖",g:"linear-gradient(135deg,#43cea2,#185a9d)",t:"6 orë më parë"},
+ {name:"arben",emoji:"⚽",g:"linear-gradient(135deg,#f83600,#f9d423)",t:"8 orë më parë"},
+ {name:"dora",emoji:"🍪",g:"linear-gradient(135deg,#ff9a9e,#fecfef)",t:"12 orë më parë"},
+ {name:"gerti",emoji:"🎧",g:"linear-gradient(135deg,#667eea,#764ba2)",t:"1 ditë më parë"}
+];
+var posts=[
+ {id:1,emoji:"🏔️",g:"linear-gradient(135deg,#1a2a6c,#b21f1f,#fdbb2d)",cap:"Majet e bukura të Alpeve shqiptare 🇦F1F1",likes:214,t:"3 orë më parë"},
+ {id:2,emoji:"🌊",g:"linear-gradient(135deg,#0f2027,#203a43,#2c5364)",cap:"Deti Jon — qetësi absolute 🌊",likes:187,t:"7 orë më parë"},
+ {id:3,emoji:"☕",g:"linear-gradient(135deg,#3e1f0d,#8a5a2b)",cap:"Mëngjesi fillon me kafe të mirë ☕",likes:342,t:"1 ditë më parë"},
+ {id:4,emoji:"🏛️",g:"linear-gradient(135deg,#41295a,#2f0743)",cap:"Kalaja e Rozafës në perëndim 🏛️",likes:156,t:"2 ditë më parë"},
+ {id:5,emoji:"🍕",g:"linear-gradient(135deg,#c0392b,#e67e22)",cap:"Byrek me spinaq — receta e gjyshes 🍕",likes:428,t:"3 ditë më parë"},
+ {id:6,emoji:"🏆",g:"linear-gradient(135deg,#141e30,#8e2de2)",cap:"Fitore e madhe sonte! 🏆🇦F1F1",likes:512,t:"4 ditë më parë"}
+];
+var state={liked:{},saved:{},counts:{},comments:{}};
+try{var raw=localStorage.getItem(LS);if(raw){state=JSON.parse(raw);}}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function likeCount(p){return state.counts[p.id]!==undefined?state.counts[p.id]:p.likes;}
+function isLiked(id){return !!state.liked[id];}
+
+var storiesEl=document.getElementById("fgStories");
+stories.forEach(function(s,i){
+  var b=document.createElement("button");
+  b.className="fg-story";
+  b.innerHTML='<div class="fg-ring"><div class="fg-ring-in" style="background:'+s.g+'">'+s.emoji+'</div></div><span>'+esc(s.name)+'</span>';
+  b.addEventListener("click",function(){openStory(i);});
+  storiesEl.appendChild(b);
+});
+
+var feedEl=document.getElementById("fgFeed");
+function renderFeed(){
+  feedEl.innerHTML="";
+  posts.forEach(function(p){
+    var liked=isLiked(p.id), saved=!!state.saved[p.id];
+    var n=(state.comments[p.id]||[]).length;
+    var card=document.createElement("article");
+    card.className="fg-post";
+    card.innerHTML=
+      '<div class="fg-phead"><div class="fg-mini">E</div><b>@erion</b><small>'+esc(p.t)+'</small></div>'+
+      '<div class="fg-photo" data-id="'+p.id+'"><div class="fg-grad" style="background:'+p.g+'"></div>'+
+      '<div class="fg-emoji">'+p.emoji+'</div><div class="fg-heartpop">❤️</div></div>'+
+      '<div class="fg-actions">'+
+      '<button class="fg-act" data-a="like" data-id="'+p.id+'" title="'+(liked?"Hiq like":"Like")+'">'+(liked?"❤️":"🤍")+'</button>'+
+      '<button class="fg-act" data-a="comment" data-id="'+p.id+'" title="Komente">💬</button>'+
+      '<button class="fg-act" data-a="save" data-id="'+p.id+'" title="'+(saved?"Hiq nga të ruajturat":"Ruaj")+'" style="margin-left:auto">'+(saved?"🔖":"🔖")+'</button>'+
+      '</div>'+
+      '<div class="fg-likes">'+likeCount(p)+' pëlqime</div>'+
+      '<div class="fg-cap"><b>@erion</b>'+esc(p.cap)+'</div>'+
+      '<button class="fg-comlink" data-a="comment" data-id="'+p.id+'">'+(n?("Shiko të "+n+" komentet"):"Shto komentin e parë…")+'</button>';
+    feedEl.appendChild(card);
+  });
+}
+renderFeed();
+
+feedEl.addEventListener("click",function(e){
+  var t=e.target.closest("[data-a]")||e.target.closest(".fg-photo");
+  if(!t)return;
+  var id=parseInt(t.getAttribute("data-id"),10);
+  var a=t.getAttribute("data-a");
+  if(t.classList.contains("fg-photo")){dblLike(t,id);return;}
+  if(a==="like")toggleLike(id);
+  else if(a==="save"){state.saved[id]=!state.saved[id];if(!state.saved[id])delete state.saved[id];save();renderFeed();}
+  else if(a==="comment")openComments(id);
+});
+feedEl.addEventListener("dblclick",function(e){
+  var ph=e.target.closest(".fg-photo");
+  if(ph)dblLike(ph,parseInt(ph.getAttribute("data-id"),10));
+});
+function dblLike(ph,id){
+  if(!isLiked(id)){
+    state.liked[id]=true;
+    state.counts[id]=likeCount(posts.filter(function(p){return p.id===id;})[0])+1;
+    save();renderFeed();
+  }
+  var card=feedEl.querySelector('.fg-photo[data-id="'+id+'"]');
+  var pop=card?card.querySelector(".fg-heartpop"):null;
+  if(pop){pop.classList.remove("show");void pop.offsetWidth;pop.classList.add("show");}
+}
+function toggleLike(id){
+  var p=posts.filter(function(x){return x.id===id;})[0];
+  if(isLiked(id)){delete state.liked[id];state.counts[id]=likeCount(p)-1;}
+  else{state.liked[id]=true;state.counts[id]=likeCount(p)+1;}
+  save();renderFeed();
+}
+
+/* ---- Story viewer ---- */
+var sModal=document.getElementById("fgStoryModal"),
+    sBody=document.getElementById("fgSBody"),
+    sName=document.getElementById("fgSName"),
+    sBar=document.getElementById("fgSBar"),
+    sIdx=0,sTimer=null,sStart=0;
+function openStory(i){
+  sIdx=i;sModal.hidden=false;showStory();
+  document.body.style.overflow="hidden";
+}
+function showStory(){
+  var s=stories[sIdx];
+  sBody.style.background=s.g;
+  sBody.innerHTML='<div>'+s.emoji+'</div><div class="fg-stime">'+esc(s.t)+'</div>';
+  sName.textContent="@"+s.name;
+  sBar.style.width="0%";
+  clearInterval(sTimer);sStart=Date.now();
+  sTimer=setInterval(function(){
+    var p=(Date.now()-sStart)/50;
+    sBar.style.width=Math.min(100,p)+"%";
+    if(p>=100)closeStory();
+  },50);
+}
+function closeStory(){clearInterval(sTimer);sModal.hidden=true;document.body.style.overflow="";}
+document.getElementById("fgSClose").addEventListener("click",closeStory);
+document.getElementById("fgSPrev").addEventListener("click",function(){sIdx=(sIdx-1+stories.length)%stories.length;showStory();});
+document.getElementById("fgSNext").addEventListener("click",function(){sIdx=(sIdx+1)%stories.length;showStory();});
+sModal.addEventListener("click",function(e){if(e.target===sModal)closeStory();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sModal.hidden)closeStory();if(e.key==="Escape"&&!cModal.hidden)closeComments();});
+
+/* ---- Comments ---- */
+var cModal=document.getElementById("fgComModal"),
+    cList=document.getElementById("fgCList"),
+    cForm=document.getElementById("fgCForm"),
+    cInput=document.getElementById("fgCInput"),
+    cTitle=document.getElementById("fgCTitle"),
+    cId=null;
+function openComments(id){
+  cId=id;cModal.hidden=false;document.body.style.overflow="";renderComments();
+  setTimeout(function(){cInput.focus();},60);
+}
+function renderComments(){
+  var cs=state.comments[cId]||[];
+  cTitle.textContent="Komentet ("+cs.length+")";
+  if(!cs.length){cList.innerHTML='<div class="fg-cempty">Ende s’ka komente. Ji i pari!</div>';return;}
+  cList.innerHTML=cs.map(function(c){
+    return '<div class="fg-citem"><b>'+esc(c.u)+'</b>'+esc(c.t)+'<small>'+esc(c.at)+'</small></div>';
+  }).join("");
+  cList.scrollTop=cList.scrollHeight;
+}
+function closeComments(){cModal.hidden=true;cInput.value="";}
+document.getElementById("fgCClose").addEventListener("click",closeComments);
+cModal.addEventListener("click",function(e){if(e.target===cModal)closeComments();});
+cForm.addEventListener("submit",function(e){
+  e.preventDefault();
+  var v=cInput.value.trim();
+  if(!v)return;
+  var d=new Date();
+  var at=d.getDate()+"/"+(d.getMonth()+1)+" "+d.getHours()+":"+(d.getMinutes()<10?"0":"")+d.getMinutes();
+  if(!state.comments[cId])state.comments[cId]=[];
+  state.comments[cId].push({u:"ti",t:v,at:at});
+  save();cInput.value="";renderComments();renderFeed();
+});
+})();
+
+
+</script>
+<script>
+(function(){
+  var tabs={
+    html:{lang:"html",get:function(){return document.getElementById("demo").innerHTML.trim();}},
+    css:{lang:"css",get:function(){return document.getElementById("appcss").textContent.trim();}},
+    js:{lang:"javascript",get:function(){return document.getElementById("appjs").textContent.trim();}}
+  };
+  var view=document.getElementById("codeView"),cur="html";
+  function render(){
+    view.textContent=tabs[cur].get();
+    view.className="language-"+tabs[cur].lang;
+    if(window.hljs){delete view.dataset.highlighted;hljs.highlightElement(view);}
+    var bs=document.querySelectorAll(".ctab");
+    for(var i=0;i<bs.length;i++)bs[i].classList.toggle("active",bs[i].dataset.tab===cur);
+  }
+  var bs=document.querySelectorAll(".ctab");
+  for(var i=0;i<bs.length;i++)bs[i].addEventListener("click",function(){cur=this.dataset.tab;render();});
+  document.getElementById("copyBtn").addEventListener("click",function(){
+    var b=this,code=tabs[cur].get();
+    function done(t){b.textContent=t;setTimeout(function(){b.textContent="Kopjo kodin";},1600);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(code).then(function(){done("U kopjua ✓");},function(){done("Dështoi");});}
+    else{var ta=document.createElement("textarea");ta.value=code;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done("U kopjua ✓");}catch(e){done("Dështoi");}document.body.removeChild(ta);}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
